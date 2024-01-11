@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="styles/signup.css" />
+    <title>Hacktitude</title>
+  </head>
+
+  <body>
+    <div class="mainContainer">
+      = <img src="./assets/bee_1.png" alt="loginBackground" class="bee_1" />
+      <img src="./assets/bee_2.png" alt="loginBackground" class="bee_2" />
+
+      <div class="d-flex justify-content-center mt-3">
+        <div class="signUpContainer">
+          <div class="d-flex flex-column bd-highlight mb-3 mt-3">
+            <div class="d-flex justify-content-center">
+              <h3>Sign Up To Hobby Hive</h3>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+              <p class="pageDescription">
+                Please fill your detail to access your account.
+              </p>
+            </div>
+            <form class="container-md" id="signupForm">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="emailInput"
+                  aria-describedby="emailHelp"
+                  required
+                />
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="firstnameInput"
+                      aria-describedby="firstName"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastnameInput"
+                      aria-describedby="lastName"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <h6 class="mt-2 mb-2">Select your gender</h6>
+              <div class="d-flex ms-2">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    id="maleId"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Male
+                  </label>
+                </div>
+                <div class="form-check ms-3">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    id="femaleId"
+                    checked
+                  />
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    Female
+                  </label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="passwordInput"
+                  aria-describedby="password"
+                  required
+                />
+              </div>
+              <h6 class="mt-2 mb-2">Hobbies</h6>
+              <p class="text-secondary">
+                Add your main 5 hobbies and rate it 1 to 5
+              </p>
+              <div id="hobbiesContainer" class="mb-1">
+                <div id="hobbieItem0">
+                  <div class="d-flex justify-content-between">
+                    <div class="input-group input-group-sm mb-1 me-2">
+                      <span
+                        class="input-group-text ml-2"
+                        id="inputGroup-sizing-sm"
+                        >Hobbie</span
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-sm"
+                        id="hobbieItem0Name"
+                        required
+                      />
+                    </div>
+                    <div class="input-group input-group-sm mb-1">
+                      <span class="input-group-text" id="inputGroup-sizing-sm"
+                        >Rate</span
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-sm"
+                        id="hobbieItem0Rate"
+                        min="1"
+                        max="5"
+                        step="1"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div id="hobbieItem0Suggestions" class="row"></div>
+                </div>
+              </div>
+              <div class="d-flex flex-row">
+                <div class="d-flex flex-row">
+                  <i class="bi bi-plus-circle" id="addHobbieBtn"></i>
+                </div>
+              </div>
+
+              <h6 class="mt-2 mb-2">Skills</h6>
+              <p class="text-secondary">
+                Add your main 5 skills and rate it 1 to 5
+              </p>
+              <div id="skillsContainer">
+                <div id="skillItem0">
+                  <div class="d-flex justify-content-between">
+                    <div class="input-group input-group-sm mb-1 me-2">
+                      <span
+                        class="input-group-text ml-2"
+                        id="inputGroup-sizing-sm"
+                        >Skill</span
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-sm"
+                        id="skillItem0Name"
+                        required
+                      />
+                    </div>
+                    <div class="input-group input-group-sm mb-1">
+                      <span class="input-group-text" id="inputGroup-sizing-sm"
+                        >Rate</span
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-sm"
+                        id="skillItem0Rate"
+                        min="1"
+                        max="5"
+                        step="1"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div id="skillItem0Suggestions" class="row"></div>
+                </div>
+              </div>
+              <div class="d-flex flex-row">
+                <i class="bi bi-plus-circle" id="addSkillBtn"></i>
+              </div>
+              <div class="mb-3">
+                <label for="image_url" class="form-label">Image URL</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="image_urlInput"
+                  aria-describedby="image_urlInput"
+                />
+              </div>
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btnLogin" style="color: white">
+                  Sign Up
+                </button>
+              </div>
+              <div class="row mt-2 loginTag">
+                <a href="login.html"><b>Already Have an account ? </b></a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./js/signup_index.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/signup.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

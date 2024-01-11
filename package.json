@@ -1,0 +1,45 @@
+{
+  "name": "devquest-backend",
+  "version": "1.0.0",
+  "description": "Hobby Hub is a platform specifically for connecting people with similar hobbies or interests. Users can join communities, share tips and tutorials, and collaborate on projects related to their hobbies.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npx node-dev src/server.js",
+    "start-dev": "npx nodemon src/server.js",
+    "migrate": "npm run delete-db && npx knex migrate:latest",
+    "seed": "npx knex seed:run",
+    "db": "npm run migrate && npm run seed",
+    "delete-db": "del-cli main.sqlite",
+    "codebuild-test": "vitest --config=vitest.config.js",
+    "test": "vitest --config=vitest.config.js",
+    "test-nix": "vitest --config=vitest.config.js"
+  },
+  "author": "DevGrade",
+  "license": "ISC",
+  "devDependencies": {
+    "iojs": "^1.0.0",
+    "jest": "^26.6.3",
+    "jest-junit": "^16.0.0",
+    "supertest": "^6.3.3",
+    "supertest-session": "^4.1.0",
+    "vitest": "^1.0.4"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.22.5",
+    "bcrypt": "^5.1.0",
+    "bootstrap-icons": "^1.10.5",
+    "chart.js": "^4.3.0",
+    "cors": "^2.8.5",
+    "del-cli": "^5.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "jest-cli": "^29.5.0",
+    "jsonwebtoken": "^9.0.1",
+    "knex": "^2.4.2",
+    "moment": "^2.29.4",
+    "socket.io": "^4.6.2",
+    "sqlite3": "^5.1.6"
+  }
+}

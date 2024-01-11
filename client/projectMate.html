@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/projectMate.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="./js/projectMate.js"></script>
+    <title>DevQuest</title>
+  </head>
+
+  <body class="parent-container">
+    <div class="page-header" id="page-header">
+      <img class="hobby-hive-logo" src="./assets/HobbyHiveLogo.png" />
+      <div class="user-info">
+        <img id="userImage" src="" />
+        <div class="user-name" id="username">Username</div>
+      </div>
+    </div>
+    <div class="sidebar" id="sidebar">
+      <div class="sideBarHeader">
+        <h5 class="projectMateHeader" id="projectMate-header">Project Mate</h5>
+        <hr />
+      </div>
+      <div class="sideBarItems">
+        <a
+          class="singleSideBarItem d-flex flex-row bd-highlight p-2 align-items-center"
+          href="dashboard.html"
+          id="dashboard-btn"
+          >Dashboard</a
+        >
+      </div>
+      <div class="groups-container">
+        <div class="sideBarHeader">
+          <h5>Groups</h5>
+          <hr />
+        </div>
+        <ul id="groupList"></ul>
+      </div>
+    </div>
+    <div class="welcome-container" id="welcome-container">
+      <div class="welcome-image">
+        <img src="./assets/bee-hive 2.png" />
+      </div>
+      <div class="welcome-header">Welcome to Project Mate</div>
+      <div class="welcome-message">
+        Create exciting projects, and collaborate with fellow busy bees. Project
+        Mate empowers you to assign tasks, track progress, and work on your
+        hobby projects effortlessly. Get ready to elevate your hobby experience
+        and bring your passion to life with Project Mate!
+      </div>
+      <div class="welcome-footer" id="welcome-footer">
+      </div>
+    </div>
+    <div class="body-container" id="body-container" style="display: none">
+      <div class="project-board-container">
+        <div class="group-header-container">
+          <div class="group-header" id="group-header"></div>
+          <div class="group-tags-container" id="group-tags-container"></div>
+        </div>
+        <div class="project-board">
+          <div class="row">
+            <div class="col to-do-col">
+              <div class="col-header">To Do</div>
+              <div class="col" id="to-do-col"></div>
+            </div>
+            <div class="col in-progress-col">
+              <div class="col-header">In Progress</div>
+              <div class="col" id="in-progress-col"></div>
+            </div>
+            <div class="col done-col">
+              <div class="col-header">Done</div>
+              <div class="col" id="done-col"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stats-container" id="stats-container" style="display: none">
+      <div class="add-project-btn-container">
+        <button class="btn-add-project" id="add-project-btn">
+          Add Project +
+        </button>
+      </div>
+      <div class="progress-tracker-container">
+        <div id="chartContainer" style="height: 356px; width: 98%"></div>
+      </div>
+      <div class="goal-setter-container">
+        <h3 class="my-tasks-header">My Tasks</h3>
+        <div class="my-tasks-container" id="goalSetterContainer"></div>
+      </div>
+    </div>
+
+    <div
+      class="modal project-details"
+      id="projectTaskModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="back-btn"
+              data-dismiss="modal"
+              aria-label="Back"
+              id="back-btn"
+            >
+              <span aria-hidden="true"
+                ><img src="assets/arrow-left-short.svg"
+              /></span>
+            </button>
+            <h5 class="modal-title" id="modalTitle"></h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              id="close-btn"
+            >
+              <span aria-hidden="true"><img src="assets/x.svg" /></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="container-fluid">
+                <div class="row">
+                  <h4 id="decriptionColumnTitle"></h4>
+                </div>
+                <div class="row">
+                  <div class="col modal-left-col">
+                    <div class="row modal-project-info" id="projectNameRow">
+                      <h5 id="projectNameLabel"></h5>
+                      <p id="projectDescription"></p>
+                    </div>
+                    <div class="row modal-project-tasks" id="tasksListRow">
+                      <h5>Tasks</h5>
+                      <ul class="list-group" id="tasksList"></ul>
+                    </div>
+                  </div>
+
+                  <div class="col modal-right-col">
+                    <div class="row" id="projectDetails">
+                      <div class="row">
+                        <h6 id="projectStatusLable"></h6>
+                        <div>
+                          <select
+                            class="project-status-dropdown"
+                            name="projectStatus"
+                            id="projectStatus"
+                          >
+                            <option value="To-Do">To Do</option>
+                            <option value="In-Progress">In progress</option>
+                            <option value="Done">Done</option>
+                          </select>
+                        </div>
+                        <div>
+                          <select
+                            class="task-status-dropdown-modal"
+                            name="taskStatus"
+                            id="taskStatus"
+                          >
+                            <option value="To-Do">To Do</option>
+                            <option value="In-Progress">In progress</option>
+                            <option value="Done">Done</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <h6 id="projectOwnerLabel"></h6>
+                        <div
+                          class="col"
+                          id="projectOwnerColumn"
+                          style="padding-left: 30px"
+                        >
+                          <img
+                            class="user-profile-picture"
+                            id="projectOwnerProfilePicture"
+                          />
+                          <span id="projectOwnerName"></span>
+                        </div>
+                      </div>
+                      <div class="row" id="taskReporterRow">
+                        <h6 id="taskReporterLabel"></h6>
+                        <div
+                          class="col padding-left"
+                          style="padding-left: 30px"
+                        >
+                          <img
+                            class="user-profile-picture"
+                            id="taskReporterProfilePicture"
+                          />
+                          <span id="taskReporterName"></span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <h6>Start Date</h6>
+                          <span class="padding-left" id="startDate"></span>
+                        </div>
+                        <div class="col">
+                          <h6>End Date</h6>
+                          <span class="padding-left" id="endDate"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" id="addTask">
+                    <button id="add-task" class="btn btn-primary btn-lg">
+                      Add Task +
+                    </button>
+                  </div>
+                  <div class="col" id="editProject">
+                    <button class="row btn btn-primary" id="editProjectButton">
+                      Edit
+                    </button>
+                    <div class="row">
+                      <button
+                        class="col btn btn-primary"
+                        id="cancelButton"
+                        style="display: none"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        class="col btn btn-primary"
+                        id="saveProjectButton"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/utils.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+  </body>
+</html>

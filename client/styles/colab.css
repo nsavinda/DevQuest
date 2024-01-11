@@ -1,0 +1,136 @@
+.sidebar {
+  height: 100vh;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+  padding: 0%;
+  background-color: #5d4995;
+}
+
+.sideBarHeader {
+  padding-top: 10px;
+  text-align: center;
+  color: white;
+}
+
+.singleSideBarMenu {
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  margin-left: 25px;
+  margin-right: 10px;
+}
+
+.singleSideBarMenu a:hover {
+    color: white;
+    background-color: #cdb4db;
+    border-radius: 2px; 
+}
+
+.singleSideBarItem {
+    color: white;
+    font-size: 18 px;
+    text-decoration: none;
+    margin-left: 25px;
+    margin-right: 10px;
+}
+
+.singleSideBarItem a {
+  color: white;
+  text-decoration: none;
+}
+
+.singleSideBarItem:hover {
+    color: white;
+    background-color: #cdb4db;
+    border-radius: 2px;  
+}
+
+.selectedSideBarItem {
+    color: white;
+    background-color: #cdb4db;
+    border-radius: 2px;
+    text-decoration: none;
+    margin-left: 25px;
+    margin-right: 10px;
+}
+
+.mainContent {
+  height: 100%;
+}
+
+.coLabContainer {
+  width: 100%;
+}
+
+.colab-card {
+  width: 18rem;
+  height: 18rem;
+}
+
+ul {
+  list-style: none;
+}
+
+ul>li {
+  padding-top: 2vh;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  border: 2px black solid;
+}
+
+.chat-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+.form-container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  resize: none;
+  min-height: 200px;
+}
+
+.form-container textarea:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+.form-container .cancel {
+  background-color: red;
+}
+
+.form-container .btn:hover,
+.open-button:hover {
+  opacity: 1;
+}
+
+.chatButton {
+  background-color: #edebf3;
+  border-color: 1px solid darkgrey;
+}

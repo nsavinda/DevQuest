@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/colab.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+    <title>Collab Hub</title>
+</head>
+
+<body>
+    <div class="d-flex">
+        <div class="coLabContainer row">
+            <div class="col-md-2 sm-4 sidebar bg-5d4995">
+                <div class="sideBarHeader">
+                    <h5>Collab Hub</h5>
+                    <hr>
+                </div>
+                <div class="sideBarItems" role="tablist">
+                    <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3  align-items-center">
+                        <div class="p-2 bd-highlight"><i class="bi bi-house-door"></i></div>
+                        <a href="dashboard.html" id="dashboard-btn">Dashboard</a>
+                    </div>
+
+                    <div
+                        class="selectedSideBarItem singleSideBarItem d-flex flex-row bd-highlight mb-3  align-items-center">
+                        <div class="p-2 bd-highlight"><i class="bi bi-plus-circle"></i></div>
+                        <a class="active" id="search-group-tab" data-bs-toggle="tab" data-bs-target="#searchGroupView"
+                            role="tab" aria-controls="searchGroupView" aria-selected="true" href="#">Join Group</a>
+                    </div>
+
+                    <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3  align-items-center">
+                        <div class="p-2 bd-highlight"><i class="bi bi-collection"></i></div>
+                        <a id="view-my-groups-tab" data-bs-toggle="tab" data-bs-target="#joinedGroupsView" role="tab"
+                            aria-controls="joinedGroupsView" aria-selected="false" href="#"
+                            onclick="loadJoinedGroup()">Joined
+                            Groups</a>
+                    </div>
+
+                    <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3  align-items-center">
+                        <div class="p-2 bd-highlight"><i class="bi bi-easel"></i></div>
+                        <a id="whiteboard-tab" data-bs-toggle="tab" data-bs-target="#whiteBoardView" role="tab"
+                            aria-controls="whiteBoardView" aria-selected="false" href="#"
+                            onclick="loadJoinedGroupWhiteBoard()">WhiteBoard</a>
+                    </div>
+
+                    <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3  align-items-center">
+                        <div class="p-2 bd-highlight"><i class="bi bi-files"></i></div>
+                        <a id="shared-docs-tab" data-bs-toggle="tab" data-bs-target="#sharedDocsView" role="tab"
+                            aria-controls="sharedDocsView" aria-selected="false" href="#"
+                            onclick="loadJoinedGroupSharedDocs()">Shared Documents</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10 sm-8 mainContent">
+                <div class="tab-content container-fluid" id="nav-tabContent">
+
+                    <div class="tab-pane fade show active" id="searchGroupView" role="tabpanel"
+                        aria-labelledby="search-group-tab" tabindex="0">
+
+                        <h2>Join Group</h2>
+                        <div class="float-end">
+                            <button type="button" id="btnCreateGroup" data-bs-toggle="modal"
+                                data-bs-target="#createGroupModal" class="btn btn-primary">Create Groups <i
+                                    class="bi bi-plus"></i></button>
+                        </div><br>
+                        <div class="groupSearchView row">
+                            <div class="groupSearchBar">
+                                <div class="input-group mb-3 col-md-2">
+                                    <div class="row">
+                                        <div class="input-group mb-3">
+                                            <input title="txtSearchGroup" type="text" id="txtSearchGroup"
+                                                class="form-control" aria-describedby="button-addon2">
+                                            <button class="btn btn-outline-secondary" id="btnSearchGroup" type="button"
+                                                id="button-addon2"><i class="bi bi-search"></i></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="groupSearchResultSpace mt-3">
+                                    <div class="row ">
+                                        <div class="groupSearchResultList row row-cols-1 row-cols-md-3 g-4">
+                                            <p>Start searching by entering a part or whole name of the group you are
+                                                looking for.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="joinedGroupsView" role="tabpanel"
+                        aria-labelledby="view-my-groups-tab" tabindex="0">
+
+                        <h2>Joined Groups</h2>
+                        <div class="float-end">
+                            <button type="button" id="btnCreateGroup" data-bs-toggle="modal"
+                                data-bs-target="#createGroupModal" class="btn btn-primary">Create Group <i
+                                    class="bi bi-plus"></i></button>
+                        </div><br>
+                        <div class="joinedGroupSearchView row">
+                            <div class="joinedGroupSearchBar">
+                                <div class="input-group mb-3 col-md-2">
+                                    <div class="row">
+                                        <div class="input-group mb-3">
+                                            <input title="txtSearchJoinedGroup" type="text" id="txtSearchJoinedGroup"
+                                                class="form-control" aria-describedby="button-addon2">
+                                            <button class="btn btn-outline-secondary" id="btnSearchJoinedGroup"
+                                                type="button" id="button-addon2"> <i
+                                                    class="bi bi-search"></i></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="joinedGroupSearchResultSpace mt-3">
+                                    <div class="row ">
+                                        <div class="joinedGroupSearchResultList row row-cols-1 row-cols-md-3 g-4">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WhiteBoard View -->
+                    <div class="tab-pane fade" id="whiteBoardView" role="tabpanel" aria-labelledby="whiteboard-tab"
+                        tabindex="0">
+
+                        <h2>WhiteBoard <span id="whiteBoardTitle"></span></h2>
+
+                        <!-- Whiteboard Dropdown -->
+                        <div class="btn-group dropend mb-3">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Select Group
+                            </button>
+                            <ul class="dropdown-menu whiteboardDropdownList">
+                            </ul>
+                        </div>
+
+                        <div id="colabCanvasContainer" class="d-none row">
+                            <div class="btn-group col-md-6 mb-3" role="group" aria-label="Basic example">
+                                <button class="btn btn-secondary" id="whiteBoardDraw" type="button"
+                                    onclick="changeWhiteBoardAction(this)">Draw</button>
+                                <button class="btn btn-secondary" id="whiteBoardSelect" type="button"
+                                    onclick="changeWhiteBoardAction(this)">Select</button>
+                                <button class="btn btn-secondary" id="whiteBoardErase" type="button"
+                                    onclick="changeWhiteBoardAction(this)">Erase</button>
+                                <button class="btn btn-secondary" id="whiteBoardClear" type="button"
+                                    onclick="changeWhiteBoardAction(this)">Clear</button>
+                                <button class="btn btn-secondary" id="whiteBoardSave" type="button"
+                                    onclick="changeWhiteBoardAction(this)">Save</button>
+                            </div>
+                            <div class="col-md-12">
+                                <canvas id="colabCanvas">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="sharedDocsView" role="tabpanel" aria-labelledby="shared-docs-tab"
+                        tabindex="0">
+
+                        <h2>Shared Documents <span id="sharedDocsTitle"></span></h2>
+                        <div class="btn-group dropend mb-3">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Select Group
+                            </button>
+
+                            <ul class="dropdown-menu sharedDocsDropdownList">
+                            </ul>
+                        </div>
+                        <div id="sharedDocsJoinedGroupView" class="d-none col">
+
+                            <div class="row">
+                                <div class="mb-3 col-md-3">
+                                    <button type="button" id="btnCreateGroup" data-bs-toggle="modal"
+                                        data-bs-target="#uploadDocumentModal" class="btn btn-secondary">Upload
+                                        Document <i class="bi bi-upload"></i></button>
+                                </div>
+                                <ul id="sharedDocsJoinedGroupList" class="row">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="float-end sticky-bottom z-1 position-absolute rounded-3 offset-sm-10 col-sm-2 ">
+                    <button class="chatButton" type="button" onclick="openForm()"><i class="bi bi-chat"></i>
+                        Messaging <i class="bi bi-caret-up-fill"></i></button>
+
+                    <div class="chat-popup" id="myForm">
+                        <form class="form-container">
+                            <h1>Chat</h1>
+
+                            <label for="msg"><b>Message</b></label>
+                            <textarea placeholder="Type message.." name="msg" required></textarea>
+
+                            <button type="submit" class="btn">Send</button>
+                            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="createGroupModal" tabindex="-1" aria-labelledby="createGroupModal"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="createGroupModalLabel">Create A Group</h1>
+                        <button type="button" class="btn btn-danger" style="font-size:18px;" data-bs-dismiss="modal"
+                            aria-label="Close"><i class="bi bi-x-circle"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 needs-validation">
+                            <div class="mb-3">
+                                <label for="validationTooltip01" class="form-label">Group Name</label>
+                                <input type="text" class="form-control" id="txtGroupName"
+                                    placeholder="Enter Group/Project Name" required>
+                                <div class="valid-tooltip">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="validationTooltip02" class="form-label">Group Description</label>
+                                <input type="text" class="form-control" id="txtGroupDesc"
+                                    placeholder="Enter Group/Project Description" required>
+                                <div class="valid-tooltip">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="btnSaveCreateGroup" type="button">Create
+                                    Group</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="uploadDocumentModal" tabindex="-1" aria-labelledby="uploadDocumentModal"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="uploadDocumentModalLabel">Upload A Document</h1>
+                        <button type="button" class="btn btn-danger" style="font-size:18px;" data-bs-dismiss="modal"
+                            aria-label="Close"><i class="bi bi-x-circle"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 needs-validation">
+                            <div class="mb-3">
+                                <label for="validationTooltip01" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="txtDocDesc"
+                                    placeholder="Enter Document Description" required>
+                                <div class="valid-tooltip">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="validationTooltip02" class="form-label">Select File</label>
+                                <input type="file" class="form-control" id="txtDocUpload"
+                                    placeholder="Enter Group/Project Description" required>
+                                <div class="valid-tooltip">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="btnUploadDoc" type="button"
+                                    onclick="uploadDocAsForm()">Upload</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Scripts to be loaded after page rendering-->
+        <script src="./js/colab.js"></script>
+        <script src="./js/utils.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+        <script src="js/fabric.min.js"></script>
+</body>
+
+</html>

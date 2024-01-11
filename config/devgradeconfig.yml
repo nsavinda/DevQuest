@@ -1,0 +1,8 @@
+version: 1.0
+
+template_name: 99x-Hacktitude-Malaysia-2023-javascript
+
+stack: javascript
+
+test_files:
+  - "**/*.test.js"

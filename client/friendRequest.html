@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="styles/friends.css" />
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script type="module" src="./js/friendRequest.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <div class="row">
+      <div class="col-md-2 sidebar">
+        <div class="sideBarHeader">
+          <h5><i class="bi bi-chat-right-dots"></i> Hobby Scout</h5>
+          <hr />
+        </div>
+        <div class="sideBarItems">
+          <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3 align-items-center">
+            <div class="p-2 bd-highlight">
+              <i class="bi bi-house-door"></i>
+            </div>
+            <a href="dashboard.html" id="dashboard-btn">Dashboard</a>
+          </div>
+          <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3 align-items-center">
+            <div class="p-2 bd-highlight">
+              <i class="bi bi-person-add"></i>
+            </div>
+            <a href="#" id="suggestedFriendsBtn">Suggested Friends</a>
+          </div>
+          <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3 align-items-center">
+            <div class="p-2 bd-highlight">
+              <i class="bi bi-person-heart"></i>
+            </div>
+            <a href="#" id="peopleYouMayKnowBtn">People You May Know</a>
+          </div>
+          <div class="selectedSideBarItem singleSideBarItem d-flex flex-row bd-highlight mb-3 align-items-center">
+            <div class="p-2 bd-highlight"><i class="bi bi-people"></i></div>
+            <a href="#" id="friendRequestBtn">Friend Requests</a>
+          </div>
+          <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3 align-items-center">
+            <div class="p-2 bd-highlight"><i class="bi bi-person-fill-check"></i></div>
+            <a href="#" id="sentRequestBtn">Sent Requests</a>
+          </div>
+          <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3 align-items-center">
+            <div class="p-2 bd-highlight">
+              <i class="bi bi-person-vcard"></i>
+            </div>
+            <a href="#" id="allFriendsBtn">All friends</a>
+          </div>
+          <div class="singleSideBarItem d-flex flex-row bd-highlight mb-3 align-items-center">
+            <div class="p-2 bd-highlight">
+              <i class="bi bi-search"></i>
+            </div>
+            <a href="#" id="searchPeopleBtn">Search</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-10">
+        <div class="container friendContainer">
+          <div class="d-flex flex-row justify-content-around firendRequestRow" id="friendsRow">
+            Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="rejectRequestModal" tabindex="-1" role="dialog" aria-labelledby="rejectRequestModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content" style="text-align: center;font-size: 18px;">
+        <div class="modal-body">
+          <p>Reject Request?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn mb-2" style="background-color:#5D4995; color:#ffffff;"
+            id="rejectModalDoneBtn">Yes</button>
+          <button type="button" class="btn mb-2" style="color:#5D4995; border: 1px solid #5D4995;"
+            id="rejectModalCancelBtn">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="acceptRequestModal" tabindex="-1" role="dialog" aria-labelledby="acceptRequestModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content" style="text-align: center;font-size: 18px;">
+        <div class="modal-body">
+          <p>Accept Request?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn mb-2" style="background-color:#5D4995; color:#ffffff;"
+            id="acceptModalDoneBtn">Yes</button>
+          <button type="button" class="btn mb-2" style="color:#5D4995; border: 1px solid #5D4995;"
+            id="acceptModalCancelBtn">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    import { isLoggedIn } from "./js/friendRequest.js";
+    function handleLoginStatus() {
+      const userName = document.getElementById("userName");
+      const loggedIn = isLoggedIn();
+
+      if (loggedIn) {
+        const token = localStorage.getItem("token");
+      } else {
+        alert("You are not logged in. Please log in to access this page.");
+
+        window.location.href = "login.html";
+      }
+    }
+    handleLoginStatus();
+  </script>
+  <script src="./js/utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>

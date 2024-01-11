@@ -1,0 +1,79 @@
+body,
+html {
+    height: 100%;
+    background: #FFF;
+}
+
+.mainContainer {
+    background: #FFF;
+    margin: 0;
+    position: relative;
+    height: 100%;
+}
+
+.backgroundImage1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.backgroundImage2 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.loginContainer {
+    margin-top: 5%;
+    width: 770px;
+    height: 480px;
+    background: rgba(255, 255, 255, 0.548);
+    backdrop-filter: blur(53px);
+    border: 1px solid rgba(255, 255, 255, 0.46);
+    border-radius: 76px;
+    z-index: 1;
+    margin-bottom: 5%;
+}
+
+.bee_1 {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 50%;
+}
+
+.bee_2 {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+}
+
+.singleInput {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.singUpTag {
+    margin-right: 100px;
+}
+
+.singUpTag a {
+    color: #FF615A;
+    text-decoration: none;
+}
+
+.btnLogin {
+    margin-top: 40px;
+    width: 300px;
+    background-color: #483387 !important;
+}
+
+.pageDescription {
+    color: #344054;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.72px;
+}

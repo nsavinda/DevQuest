@@ -1,0 +1,118 @@
+.btnLogin{
+    width: 100px;
+}
+
+.suggestionContainer{
+  width: 400px;
+}
+
+.closeIcon {
+  color:rgb(214, 2, 2);
+  
+}
+
+.closeIcon:hover {
+  color:rgb(255, 0, 0);
+  cursor: pointer;
+}
+
+.suggesstionItem {
+  cursor: pointer;
+}
+
+.mainContainer {
+  background: #FFF;
+  margin: 0;
+  position: relative;
+  height: 100%;
+}
+
+.backgroundImage1 {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.backgroundImage2 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+}
+
+.signUpContainer {
+  margin-top: 5%;
+  width: 770px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.548);
+  backdrop-filter: blur(53px);
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 76px;
+  z-index: 1;
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-bottom: 5%;
+
+}
+
+.bee_1 {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 50%;
+}
+
+.bee_2 {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+}
+
+.singleInput {
+  margin-left: 100px;
+  margin-right: 100px;
+  padding: 0;
+}
+
+#addSkillBtn{
+  color:rgb(255, 0, 0);
+  font-size: 15px;
+}
+
+#addSkillBtn:hover{
+  cursor: pointer;
+}
+
+#addHobbieBtn{
+  color:rgb(255, 0, 0);
+  font-size: 15px;
+}
+
+#addHobbieBtn{
+  cursor: pointer;
+}
+
+.btnLogin {
+  margin-top: 40px;
+  width: 300px;
+  background-color: #483387 !important;
+}
+
+.loginTag {
+  margin-right: 100px;
+}
+
+.loginTag a {
+  color: #FF615A;
+  text-decoration: none;
+}
+
+.pageDescription {
+  color: #344054;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.72px;
+}

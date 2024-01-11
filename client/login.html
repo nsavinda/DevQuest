@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./js/login.js"></script>
+    <link rel="stylesheet" href="styles/login.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>DevQuest</title>
+  </head>
+
+  <body>
+    <div class="mainContainer">
+      <img src="./assets/bee_1.png" alt="loginBackground" class="bee_1" />
+      <img src="./assets/bee_2.png" alt="loginBackground" class="bee_2" />
+      <div class="d-flex justify-content-center">
+        <div class="loginContainer">
+          <div class="d-flex flex-column bd-highlight mb-3 mt-3">
+            <div class="d-flex justify-content-center">
+              <h3>Login To Hobby Hive</h3>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+              <p class="pageDescription">
+                Please fill your detail to access your account.
+              </p>
+            </div>
+            <form class="container-md" id="loginForm">
+              <div class="mb-3 singleInput">
+                <label for="emailInput" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="emailInput"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+              <div class="mb-3 singleInput mt-5">
+                <label for="passwordInput" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="passwordInput"
+                />
+              </div>
+
+              <span
+                id="errorMsg"
+                class="mb-3 mt-5"
+                style="
+                  color: red;
+                  align-items: center;
+                  display: flex;
+                  justify-content: center;
+                  font-size: 18px;
+                "
+              >
+              </span>
+
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btnLogin" style="color: white">
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
