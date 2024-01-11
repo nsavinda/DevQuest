@@ -136,6 +136,7 @@ export default {
     addNewTaskReq,
     addUserToGroup,
     getGroupsFromUser,
+    updateProjectReq,
     updateProjectStatusReq,
     updateTaskStatusReq
 };
