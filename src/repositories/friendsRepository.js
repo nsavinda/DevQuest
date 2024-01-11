@@ -131,29 +131,35 @@ async function viewSentReqs(id) {
 
 //Update this method to view the users whose the requests were received and complete challenge3.e
 async function viewPendingReqs(id) {
-  console.log("id", id)
-  let userId = id;
+    console.log('id', id);
+    let userId = id;
 
-  const friends = await knex_db('friends').where('status', 'PENDING').andWhere(function () {
-    this.where('sender_id', userId).orWhere('recipient_id', userId);
-  });
-  let friendIds = friends.map(friend => friend.sender_id == userId ? friend.recipient_id : friend.sender_id);
-  
-  let requestIds = friends.map(friend => friend.id);
-  console.log("requestIds", requestIds)
+    const friends = await knex_db('friends')
+        .where('status', 'PENDING')
+        .andWhere(function () {
+            this.where('sender_id', userId).orWhere('recipient_id', userId);
+        });
+    let friendIds = friends.map((friend) =>
+        friend.sender_id == userId ? friend.recipient_id : friend.sender_id
+    );
 
-  console.log("friendIds", friendIds)
-  friendIds = [...new Set(friendIds)];
+    let requestIds = friends.map((friend) => friend.id);
+    console.log('requestIds', requestIds);
 
-  let pendingRequests = [];
-  for (let friendId of friendIds) {
-    const userDetails = await userRepository.getUser(friendId);
-    const request = friends.find(friend => friend.sender_id == friendId || friend.recipient_id == friendId);
-    userDetails.reqId = request.id;
-    pendingRequests.push(userDetails);
-  }
+    console.log('friendIds', friendIds);
+    friendIds = [...new Set(friendIds)];
 
-  return pendingRequests;
+    let pendingRequests = [];
+    for (let friendId of friendIds) {
+        const userDetails = await userRepository.getUser(friendId);
+        const request = friends.find(
+            (friend) => friend.sender_id == friendId || friend.recipient_id == friendId
+        );
+        userDetails.reqId = request.id;
+        pendingRequests.push(userDetails);
+    }
+
+    return pendingRequests;
 }
 
 //Update this method to complete the challenge3.f
@@ -313,13 +319,68 @@ async function getPeopleFromKeyword(id, keyword, pageNumber) {
     let query;
     const pageSize = 3;
     const offset = (pageNumber - 1) * pageSize;
+
     if (!keyword) {
         query = '';
     } else {
-        query = '';
+        query = keyword;
     }
+
     return new Promise((resolve, reject) => {
-        resolve([]);
+        knex_db
+            .raw(
+                `
+                SELECT
+                us.email,
+                us.firstname,
+                us.gender,
+                us.id,
+                us.image_url,
+                us.lastname,
+                MAX(CASE WHEN fr.sender_id = ? OR fr.recipient_id = ? THEN fr.recipient_id ELSE NULL END) as recipient_id,
+                MAX(CASE WHEN fr.sender_id = ? OR fr.recipient_id = ? THEN fr.id ELSE NULL END) as reqId,
+                MAX(CASE WHEN fr.sender_id = ? OR fr.recipient_id = ? THEN fr.sender_id ELSE NULL END) as sender_id,
+                MAX(CASE WHEN fr.sender_id = ? OR fr.recipient_id = ? THEN fr.status ELSE NULL END) as status
+                FROM users us
+                LEFT JOIN hobbies uht ON us.id = uht.userId
+                LEFT JOIN skills ust ON us.id = ust.userId
+                LEFT JOIN friends fr ON fr.sender_id = us.id OR fr.recipient_id = us.id
+                WHERE 
+                    us.id <> ? AND (
+                    (us.firstname LIKE ?) OR
+                    (us.lastname LIKE ?) OR
+                    (ust.name LIKE ?) OR
+                    (uht.name LIKE ?) )
+                GROUP BY us.id, us.email, us.firstname, us.lastname, us.gender, us.image_url
+                ORDER BY us.id
+                LIMIT ?
+                OFFSET ?;
+
+            `,
+                [
+                    id,
+                    id,
+                    id,
+                    id,
+                    id,
+                    id,
+                    id,
+                    id,
+                    id,
+                    `%${query}%`,
+                    `%${query}%`,
+                    `%${query}%`,
+                    `%${query}%`,
+                    pageSize,
+                    offset
+                ]
+            )
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 }
 
