@@ -1,8 +1,7 @@
 import express from 'express';
 import groupService from '../services/groupService.js';
 export const router = express.Router();
-import HttpStatus from "../enums/httpStatus.js";
-
+import HttpStatus from '../enums/httpStatus.js';
 
 router.get('/:userId', async (req, res) => {
     const userId = req.params.userId;
@@ -79,13 +78,13 @@ router.get('/:projectId/project', async (req, res) => {
 //
 //
 
-router.post("/addNewProject", async (req, res) => {
+router.post('/addNewProject', async (req, res) => {
     const data = req.body;
     const response = await groupService.addNewProjectReq(data);
     res.status(response.status).json(response);
 });
 
-router.post("/addNewTask", async (req, res) => {
+router.post('/addNewTask', async (req, res) => {
     const data = req.body;
     const response = await groupService.addNewTaskReq(data);
     res.status(response.status).json(response);
@@ -93,13 +92,13 @@ router.post("/addNewTask", async (req, res) => {
 
 router.get('/keywordsearch/:keyword', async (req, res) => {
     let keyword = req.params.keyword;
-    const groupSearchFilter = await groupService.getUserGroupsByKeyword(keyword);
+    const groupSearchFilter = await groupService.getGroupsFromKeyword(keyword);
     res.send(groupSearchFilter);
 });
 
 router.post('/addNewGroup', async (req, res) => {
     const data = req.body;
-    const response = await groupService.addNewGroup(data)
+    const response = await groupService.addNewGroup(data);
     res.send(response);
 });
 
@@ -107,6 +106,6 @@ router.post('/addUserIntoGroup', async (req, res) => {
     const data = req.body;
     const response = await groupService.addUserToGroup(data);
     res.send(response);
-})
+});
 
 export default router;
