@@ -94,24 +94,26 @@ router.post('/download-doc/', async (req, res) => {
 });
 
 router.get('/get-whiteboard/:groupId', async (req, res) => {
-    let group_id = req.params.groupId;
-    let whiteboardData = await colabService.getWhiteBoardDataByGroup(group_id);
-    res.json(whiteboardData);
-});
-
-router.post('/post-whiteboard/', async (req, res) => {
+    const groupId = req.params.groupId;
     try {
-        let data = req.body;
-        let response = await colabService.addWhiteBoardData(data);
-        if (response.status == HttpStatus.FORBIDDEN) {
-            res.status(response.status).json({ message: "IRequest already sent" });
-        } else {
-            res.status(response.status).json(response);
-        }
-    } catch (err) {
-        res.status(500).send(err);
+        const whiteboardData = await colabService.getWhiteBoardDataByGroup(groupId);
+        res.json({ status: HttpStatus.OK, response: whiteboardData });
+    } catch (error) {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     }
 });
+
+// Endpoint to add whiteboard data
+router.post('/post-whiteboard/', async (req, res) => {
+    const data = req.body;
+    try {
+        const id = await colabService.addWhiteBoardData(data);
+        res.status(HttpStatus.OK).json({ message: "Whiteboard data added successfully", id });
+    } catch (error) {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
+    }
+});
+
 
 async function uploadDoc(doc) {
     await doc.mv("./client/uploads/" + doc.file_name);
