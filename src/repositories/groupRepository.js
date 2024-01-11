@@ -87,7 +87,29 @@ async function getUsersOfGroups(groupId) {
 }
 
 // Implement this method body for challenge 10
-async function addNewProject(projectDetails) {}
+async function addNewProject(projectDetails) {
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw(
+                'INSERT INTO projects (name, description, createdDate, dueDate, ownerId, groupId, projectStatus) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id',
+                [
+                    projectDetails.projectName,
+                    projectDetails.projectDescription,
+                    projectDetails.currentDate,
+                    projectDetails.endDate,
+                    projectDetails.userId,
+                    projectDetails.seletedUserGroupId,
+                    projectDetails.status
+                ]
+            )
+            .then((result) => {
+                resolve('success');
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 // Implement this method body for challenge 11
 async function addNewTask(taskDetails) {}
