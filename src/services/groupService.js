@@ -90,6 +90,10 @@ async function getGroupsFromKeyword(keyword) {
 
 // Implement this method for Challenge 5
 async function addNewGroup(data) {
+    if (!Array.isArray(data.hobbies)) data.group_hobbies = [];
+
+    data.group_hobbies = JSON.stringify(data.group_hobbies);
+
     const response = await groupRepository.addNewGroup(data);
     if (response == 'success') {
         return { response: response, status: httpStatus.OK };

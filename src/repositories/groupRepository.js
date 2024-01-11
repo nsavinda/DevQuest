@@ -143,7 +143,7 @@ async function addNewGroup(data) {
         knex_db
             .raw(
                 'INSERT INTO groups (name, description, hobbies, capacity) VALUES (?, ?, ?, ?) RETURNING id',
-                [data.group_name, data.group_desc, data.group_hobbies || [], data.capacity || 0]
+                [data.group_name, data.group_desc, data.group_hobbies, data.group_capacity || 0]
             )
             .then((result) => {
                 resolve('success');
