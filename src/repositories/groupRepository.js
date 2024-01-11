@@ -93,20 +93,38 @@ async function addNewProject(projectDetails) {}
 async function addNewTask(taskDetails) {}
 
 // Implement this method for challenge 12
-async function updateProject(details, projectId) {}
+async function updateProject(details, projectId) {
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw('UPDATE projects SET name = ?, description = ?, dueDate = ? WHERE id = ?', [
+                details.projectName,
+                details.projectDescription,
+                details.endDate,
+                projectId
+            ])
+            .then(() => {
+                resolve({ text: 'success' });
+            })
+            .catch((error) => {
+                console.log(error);
+                reject(error);
+            });
+    });
+}
 
 // Implement this method for challenge 13
 async function updateTask(details, taskId) {}
 
 // Implement this method for challenge 14
 async function updateProjectStatus(projectId, status) {
-    const result = await knex_db('projects') 
+    const result = await knex_db('projects')
         .where('id', projectId)
         .update({ projectStatus: status });
+
     if (result) {
-        return "success";
+        return 'success';
     } else {
-        throw new Error("Project update failed");
+        throw new Error('Project update failed');
     }
 }
 
