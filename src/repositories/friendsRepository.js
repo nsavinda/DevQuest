@@ -110,10 +110,66 @@ async function sendReq(data) {
 
 async function getPeopleYouMayKnow(id) {
     const parsedId = parseInt(id);
-    return new Promise((resolve, reject) => {
-        resolve([]);
+    return new Promise(async (resolve, reject) => {
+        try {
+            let queue = [parsedId];
+            let visited = new Set();
+
+            while (queue.length > 0) {
+                const currentId = queue.shift();
+                visited.add(currentId);
+
+                const friends = await knex_db('friends')
+                    .where(function() {
+                        this.where('sender_id', currentId).orWhere('recipient_id', currentId)
+                    })
+                    .andWhere('status', 'ACCEPTED');
+
+                if (friends.length === 0) {
+                    resolve([])
+                    return;
+                }
+
+                console.log("friends", friends)
+                for (const friend of friends) {
+                    const friendId = friend.sender_id === currentId ? friend.recipient_id : friend.sender_id;
+                    if (!visited.has(friendId)) {
+                        queue.push(friendId);
+                    }
+                }
+            }
+
+            // get immediate friends
+            const friends = await knex_db('friends').where(function () {
+                this.where('sender_id', parsedId).orWhere('recipient_id', parsedId)
+            }).andWhere('status', 'ACCEPTED');
+
+            const friendIds = friends.map(friend =>
+                friend.sender_id === parsedId ? friend.recipient_id : friend.sender_id
+            );
+
+            friendIds.forEach(id => visited.delete(id));
+            visited.delete(parsedId);
+
+            console.log("visited", visited)
+
+            let user_details = [];
+            for (const id of visited) {
+                const userDetails = await userRepository.getUser(id);
+                delete userDetails.hobbies;
+                delete userDetails.skills;
+                user_details.push(userDetails);
+            }
+
+            resolve(user_details);
+        } catch (error) {
+            reject(error);
+        }
     });
 }
+
+
+
 
 //Update this method to view the users to whom the requests were sent and complete challenge3.d
 async function viewSentReqs(id) {
@@ -131,29 +187,29 @@ async function viewSentReqs(id) {
 
 //Update this method to view the users whose the requests were received and complete challenge3.e
 async function viewPendingReqs(id) {
-  console.log("id", id)
-  let userId = id;
+    console.log("id", id)
+    let userId = id;
 
-  const friends = await knex_db('friends').where('status', 'PENDING').andWhere(function () {
-    this.where('sender_id', userId).orWhere('recipient_id', userId);
-  });
-  let friendIds = friends.map(friend => friend.sender_id == userId ? friend.recipient_id : friend.sender_id);
-  
-  let requestIds = friends.map(friend => friend.id);
-  console.log("requestIds", requestIds)
+    const friends = await knex_db('friends').where('status', 'PENDING').andWhere(function () {
+        this.where('sender_id', userId).orWhere('recipient_id', userId);
+    });
+    let friendIds = friends.map(friend => friend.sender_id == userId ? friend.recipient_id : friend.sender_id);
 
-  console.log("friendIds", friendIds)
-  friendIds = [...new Set(friendIds)];
+    let requestIds = friends.map(friend => friend.id);
+    console.log("requestIds", requestIds)
 
-  let pendingRequests = [];
-  for (let friendId of friendIds) {
-    const userDetails = await userRepository.getUser(friendId);
-    const request = friends.find(friend => friend.sender_id == friendId || friend.recipient_id == friendId);
-    userDetails.reqId = request.id;
-    pendingRequests.push(userDetails);
-  }
+    console.log("friendIds", friendIds)
+    friendIds = [...new Set(friendIds)];
 
-  return pendingRequests;
+    let pendingRequests = [];
+    for (let friendId of friendIds) {
+        const userDetails = await userRepository.getUser(friendId);
+        const request = friends.find(friend => friend.sender_id == friendId || friend.recipient_id == friendId);
+        userDetails.reqId = request.id;
+        pendingRequests.push(userDetails);
+    }
+
+    return pendingRequests;
 }
 
 //Update this method to complete the challenge3.f
