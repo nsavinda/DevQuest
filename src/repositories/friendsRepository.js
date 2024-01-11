@@ -156,6 +156,20 @@ async function getPeopleYouMayKnow(id) {
 
             // console.log('visited', visited);
 
+            // get all pending requests
+            const pendingRequests = await knex_db('friends')
+                .where('status', 'PENDING')
+                .andWhere(function () {
+                    this.where('sender_id', parsedId).orWhere('recipient_id', parsedId);
+                });
+
+            const pendingRequestIds = pendingRequests.map((request) => {
+                return request.sender_id === parsedId ? request.recipient_id : request.sender_id;
+            });
+            
+            // remove pending requests from visited
+            pendingRequestIds.forEach((id) => visited.delete(id));
+
             let user_details = [];
             for (const id of visited) {
                 const userDetails = await userRepository.getUser(id);
@@ -163,6 +177,8 @@ async function getPeopleYouMayKnow(id) {
                 delete userDetails.skills;
                 user_details.push(userDetails);
             }
+
+            
 
             resolve(user_details);
         } catch (error) {
