@@ -6,3 +6,4 @@ package-lock.json
 main.sqlite3
 .vscode
 junit.xml
+pnpm-lock.yaml
