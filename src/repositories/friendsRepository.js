@@ -365,19 +365,51 @@ async function viewFriends(id) {
     return friends;
 }
 
+
+
+
 async function getPeopleFromKeyword(id, keyword, pageNumber) {
-    let query;
-    const pageSize = 3;
-    const offset = (pageNumber - 1) * pageSize;
-    if (!keyword) {
-        query = '';
-    } else {
-        query = '';
-    }
-    return new Promise((resolve, reject) => {
-        resolve([]);
-    });
+  const pageSize = 3;
+  const offset = (pageNumber - 1) * pageSize;
+  const keywordPattern = `%${keyword}%`;
+
+  let query = `
+    SELECT users.id, users.email, users.gender, users.image_url, users.firstname, users.lastname, 
+           friends.status, friends.recipient_id , friends.sender_id, friends.id AS reqId
+    FROM users
+    LEFT JOIN friends ON (users.id = friends.recipient_id AND friends.sender_id = ?) 
+                    OR (users.id = friends.sender_id AND friends.recipient_id = ?)
+    WHERE users.id != ?
+    AND (1 = 1`;
+
+  if (keyword) {
+    query += `
+      AND (users.firstname LIKE ?
+      OR users.lastname LIKE ?
+      OR EXISTS (
+        SELECT * FROM skills
+        WHERE skills.userId = users.id
+        AND skills.name LIKE ?)
+      OR EXISTS (
+        SELECT * FROM hobbies
+        WHERE hobbies.userId = users.id
+        AND hobbies.name LIKE ?))`;
+  }
+
+  query += `)
+    LIMIT ?
+    OFFSET ?`;
+
+  return new Promise((resolve, reject) => {
+    knex_db.raw(query, keyword ? [id, id, id, keywordPattern, keywordPattern, keywordPattern, keywordPattern, pageSize, offset] : [id, id, id, pageSize, offset])
+      .then(results => resolve(results))
+      .catch(error => reject(error));
+  });
 }
+
+
+
+
 
 export default {
     init,
