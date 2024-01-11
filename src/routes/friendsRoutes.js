@@ -50,7 +50,7 @@ router.get('/:id/sent-requests', async (req, res) => {
 
 router.get('/:id/received-requests', async (req, res) => {
     const id = req.params.id;
-    console.log('ID', id);
+    // console.log('ID', id);
     const response = await friendsService.viewPendingReqs(id);
     res.status(response.status).json(response);
 });

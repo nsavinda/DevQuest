@@ -239,7 +239,7 @@ const users = [
 // console.log("Inserting users")
 // router.get("/insert", async (req, res) => {
 router.get('/insert', async (req, res) => {
-    console.log('Inserting users');
+    // console.log('Inserting users');
     users.forEach(async (user) => {
         await userService.insertUser(user);
     });
@@ -259,7 +259,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    console.log('Getting users');
+    // console.log('Getting users');
     const response = await userService.getUsers();
 
     if (response.status == HttpStatus.NOT_FOUND) {

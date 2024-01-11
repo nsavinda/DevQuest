@@ -10,80 +10,80 @@ function init(db) {
 }
 
 async function getUsers() {
-  try {
-    // select all without password
-    const users = await knex_db('users').select('*');
-    // remove password from each user
+    try {
+        // select all without password
+        const users = await knex_db('users').select('*');
+        // remove password from each user
 
-    // users.forEach((user) => {
-    //   delete user.password;
+        // users.forEach((user) => {
+        //   delete user.password;
 
-    //   // get the hobbies of the user
-    //   knex_db('hobbies').select('*').where('userId', user.id).then((hobbies) => {
-    //     user.hobbies = hobbies;
-    //     // console.log(user.hobbies)
+        //   // get the hobbies of the user
+        //   knex_db('hobbies').select('*').where('userId', user.id).then((hobbies) => {
+        //     user.hobbies = hobbies;
+        //     // console.log(user.hobbies)
 
-    //     // get the skills of the user
-    //     knex_db('skills').select('*').where('userId', user.id).then((skills) => {
-    //       user.skills = skills;
-    //     });
-    //   });
-      
-    // });
+        //     // get the skills of the user
+        //     knex_db('skills').select('*').where('userId', user.id).then((skills) => {
+        //       user.skills = skills;
+        //     });
+        //   });
 
-    // {
-    //   id: 1,
-    //   email: "mscott@office.com",
-    //   gender: "Male",
-    //   image_url:
-    //     "https://upload.wikimedia.org/wikipedia/en/d/dc/MichaelScott.png",
-    //   firstname: "Michael",
-    //   lastname: "Scott",
-    //   hobbies: [
-    //     { name: "Gym", rate: 4 },
-    //     { name: "Soccer", rate: 5 },
-    //     { name: "Sports", rate: 3 },
-    //   ],
-    //   skills: [
-    //     { name: "C++", rate: 4 },
-    //     { name: "Java", rate: 5 },
-    //     { name: "Python", rate: 3 },
-    //   ],
-    // },
+        // });
 
-    for(let user of users) {
-      delete user.password;
+        // {
+        //   id: 1,
+        //   email: "mscott@office.com",
+        //   gender: "Male",
+        //   image_url:
+        //     "https://upload.wikimedia.org/wikipedia/en/d/dc/MichaelScott.png",
+        //   firstname: "Michael",
+        //   lastname: "Scott",
+        //   hobbies: [
+        //     { name: "Gym", rate: 4 },
+        //     { name: "Soccer", rate: 5 },
+        //     { name: "Sports", rate: 3 },
+        //   ],
+        //   skills: [
+        //     { name: "C++", rate: 4 },
+        //     { name: "Java", rate: 5 },
+        //     { name: "Python", rate: 3 },
+        //   ],
+        // },
 
-      const hobbies = await knex_db('hobbies').select('*').where('userId', user.id).orderBy('hobbies.name');
-      user.hobbies = hobbies;
+        for (let user of users) {
+            delete user.password;
 
-      for(let hobby of user.hobbies) {
-        delete hobby.id;
-        delete hobby.userId;
-      }
+            const hobbies = await knex_db('hobbies')
+                .select('*')
+                .where('userId', user.id)
+                .orderBy('hobbies.name');
+            user.hobbies = hobbies;
 
-      const skills = await knex_db('skills').select('*').where('userId', user.id);
-      user.skills = skills;
+            for (let hobby of user.hobbies) {
+                delete hobby.id;
+                delete hobby.userId;
+            }
 
-      for(let skill of user.skills) {
-        delete skill.id;
-        delete skill.userId;
-      }
+            const skills = await knex_db('skills').select('*').where('userId', user.id);
+            user.skills = skills;
 
+            for (let skill of user.skills) {
+                delete skill.id;
+                delete skill.userId;
+            }
+        }
 
+        // console.log("users")
+
+        // console.log(users)
+
+        return users;
+    } catch (error) {
+        console.error('Could not fetch users:', error);
+        return [];
     }
-
-    console.log("users")
-
-    console.log(users)
-
-    return users;
-  } catch (error) {
-    console.error("Could not fetch users:", error);
-    return [];
-  }
 }
-
 
 //Update this method to complete challenge0.c and challenge1.b
 async function getUser(id) {
@@ -196,56 +196,57 @@ async function deleteUser(id) {
 
 // insert user
 async function insertUser(user) {
-  return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
+        user.password = 'Ryan1234';
+        // console.log(user.email)
+        bcrypt.hash(user.password, 10, async (err, hash) => {
+            if (err) {
+                reject(err);
+            } else {
+                user.password = hash;
 
-    user.password = "Ryan1234";
-    console.log(user.email)
-    bcrypt.hash(user.password, 10, async (err, hash) => {
-      if (err) {
-        reject(err);
-      } else {
-        user.password = hash;
+                try {
+                    const [userId] = await knex_db('users')
+                        .insert({
+                            email: user.email,
+                            password: user.password,
+                            gender: user.gender,
+                            image_url: user.image_url,
+                            firstname: user.firstname,
+                            lastname: user.lastname
+                        })
+                        .returning('id');
 
-        try {
-          const [userId] = await knex_db('users').insert({
-            email: user.email,
-            password: user.password,
-            gender: user.gender,
-            image_url: user.image_url,
-            firstname: user.firstname,
-            lastname: user.lastname,
-          }).returning('id');
+                    for (let hobby of user.hobbies) {
+                        await knex_db('hobbies').insert({
+                            userId: userId,
+                            name: hobby.name,
+                            rate: hobby.rate
+                        });
+                    }
 
-          for (let hobby of user.hobbies) {
-            await knex_db('hobbies').insert({
-              userId: userId,
-              name: hobby.name,
-              rate: hobby.rate,
-            });
-          }
+                    for (let skill of user.skills) {
+                        await knex_db('skills').insert({
+                            userId: userId,
+                            name: skill.name,
+                            rate: skill.rate
+                        });
+                    }
 
-          for (let skill of user.skills) {
-            await knex_db('skills').insert({
-              userId: userId,
-              name: skill.name,
-              rate: skill.rate,
-            });
-          }
-
-          resolve('User inserted successfully!');
-        } catch (error) {
-          console.error(error);
-          reject(error);
-        }
-      }
+                    resolve('User inserted successfully!');
+                } catch (error) {
+                    console.error(error);
+                    reject(error);
+                }
+            }
+        });
     });
-  });
 }
 
 export default {
-  getUsers,
-  init,
-  getUser,
-  deleteUser,
-  insertUser,
+    getUsers,
+    init,
+    getUser,
+    deleteUser,
+    insertUser
 };

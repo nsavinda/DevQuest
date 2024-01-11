@@ -98,7 +98,7 @@ async function getUsersOfGroups(groupId) {
         WHERE ug.group_id = ?`,
                 [groupId]
             )
-            .then(async(result) => {
+            .then(async (result) => {
                 const users = result;
                 for (let i = 0; i < users.length; i++) {
                     const user = users[i];
@@ -180,7 +180,7 @@ async function updateProject(details, projectId) {
                 resolve({ text: 'success' });
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
                 reject(error);
             });
     });
@@ -188,13 +188,18 @@ async function updateProject(details, projectId) {
 
 // Implement this method for challenge 13
 async function updateTask(details, taskId) {
-    const result = await knex_db('tasks') 
+    const result = await knex_db('tasks')
         .where('id', taskId)
-        .update({ name: details.taskName, description: details.taskDescription, dueDate: details.endDate, assigneeId: details.assignee });
+        .update({
+            name: details.taskName,
+            description: details.taskDescription,
+            dueDate: details.endDate,
+            assigneeId: details.assignee
+        });
     if (result) {
-        return "success";
+        return 'success';
     } else {
-        throw new Error("Task update failed");
+        throw new Error('Task update failed');
     }
 }
 
@@ -213,17 +218,14 @@ async function updateProjectStatus(projectId, status) {
 
 // Implement this method for challenge 15
 async function updateTaskStatus(taskId, status) {
-    const result = await knex_db('tasks') 
-        .where('id', taskId)
-        .update({ taskStatus: status });
+    const result = await knex_db('tasks').where('id', taskId).update({ taskStatus: status });
 
     if (result) {
-        return "success";
+        return 'success';
     } else {
-        throw new Error("Task update failed");
+        throw new Error('Task update failed');
     }
 }
-
 
 async function getProjectById(projectId) {
     return new Promise((resolve, reject) => {
@@ -308,7 +310,7 @@ async function getGroupsFromUser(userId) {
             )
             .then((result) => {
                 const groups = result;
-                console.log(groups);
+                // console.log(groups);
                 resolve(groups);
             })
             .catch((error) => {

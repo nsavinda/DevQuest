@@ -130,7 +130,7 @@ async function getPeopleYouMayKnow(id) {
                     return;
                 }
 
-                console.log('friends', friends);
+                // console.log('friends', friends);
                 for (const friend of friends) {
                     const friendId =
                         friend.sender_id === currentId ? friend.recipient_id : friend.sender_id;
@@ -154,7 +154,7 @@ async function getPeopleYouMayKnow(id) {
             friendIds.forEach((id) => visited.delete(id));
             visited.delete(parsedId);
 
-            console.log('visited', visited);
+            // console.log('visited', visited);
 
             let user_details = [];
             for (const id of visited) {
@@ -187,7 +187,7 @@ async function viewSentReqs(id) {
 
 //Update this method to view the users whose the requests were received and complete challenge3.e
 async function viewPendingReqs(id) {
-    console.log('id', id);
+    // console.log('id', id);
     let userId = id;
 
     const friends = await knex_db('friends')
@@ -200,9 +200,9 @@ async function viewPendingReqs(id) {
     );
 
     let requestIds = friends.map((friend) => friend.id);
-    console.log('requestIds', requestIds);
+    // console.log('requestIds', requestIds);
 
-    console.log('friendIds', friendIds);
+    // console.log('friendIds', friendIds);
     friendIds = [...new Set(friendIds)];
 
     let pendingRequests = [];
@@ -221,7 +221,7 @@ async function viewPendingReqs(id) {
 
 //Update this method to complete the challenge3.f
 async function acceptReq(id) {
-    console.log('ID---', id);
+    // console.log('ID---', id);
     return new Promise((resolve, reject) => {
         knex_db
             .raw("UPDATE friends SET status = 'ACCEPTED' WHERE id = ?", [id])
@@ -312,7 +312,7 @@ async function viewFriends(id) {
                 });
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
                 reject(error);
             });
     });
