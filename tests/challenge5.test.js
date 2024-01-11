@@ -1,8 +1,7 @@
-
-import app from "../src/server.js";
-import db from "../db/db-config.js";
-import testBase from "./testBase.js";
-import { expect,test,describe,beforeAll,afterAll,afterEach } from "vitest";
+import app from '../src/server.js';
+import db from '../db/db-config.js';
+import testBase from './testBase.js';
+import { expect, test, describe, beforeAll, afterAll, afterEach } from 'vitest';
 var testSession = null;
 
 /**
@@ -27,7 +26,7 @@ afterAll((done) => {
     app.close(done);
 });
 
-describe("Post authentication tasks", () => {
+describe('Post authentication tasks', () => {
     var authenticatedSession = null;
     var authenticatedUserId = null;
     beforeAll(
@@ -38,8 +37,8 @@ describe("Post authentication tasks", () => {
             })
     );
 
-    test("Challenge 5.a - Getting groups based on keyword, e.g. ball", async () => {
-        let keyword = "ball";
+    test('Challenge 5.a - Getting groups based on keyword, e.g. ball', async () => {
+        let keyword = 'ball';
         const result = await authenticatedSession.get(`/api/groups/keywordsearch/${keyword}`);
         expect(result.status).toBe(200);
         const parsedResponse1 = JSON.parse(result.text);
@@ -47,11 +46,11 @@ describe("Post authentication tasks", () => {
         expect(responseArray1.length).toBe(3);
     });
 
-    test("Challenge 5.b - Insert New group into Group table at DB", async () => {
-        const res = await authenticatedSession.post("/api/groups/addNewGroup").send({
-            group_name: 'Boxing', 
+    test('Challenge 5.b - Insert New group into Group table at DB', async () => {
+        const res = await authenticatedSession.post('/api/groups/addNewGroup').send({
+            group_name: 'Boxing',
             group_desc: 'Boxing fan group'
-          });
+        });
         expect(res.status).toBe(200);
     });
 });

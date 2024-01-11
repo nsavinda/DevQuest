@@ -10,7 +10,40 @@ function init(db) {
 
 //Update this method to complete challenge2.a
 async function getSuggestedFriends(userId) {
-  return [];
+  try {
+    const userHobbies = await knex_db('hobbies').where('userId', userId).select('name', 'rate');
+    const otherUsers = await knex_db('hobbies').whereNot('userId', userId).whereIn('name', userHobbies.map(hobby => hobby.name)).select('userId', 'name', 'rate');
+
+    const friends = await knex_db('friends').where('status', 'ACCEPTED').andWhere(function () {
+      this.where('sender_id', userId).orWhere('recipient_id', userId);
+    });
+    const friendIds = friends.map(friend => friend.sender_id == userId ? friend.recipient_id : friend.sender_id);
+
+    let filteredOtherUsers = otherUsers.filter(user => !friendIds.includes(user.userId));
+    filteredOtherUsers = filteredOtherUsers.map(user => {
+      const userHobby = userHobbies.find(hobby => hobby.name === user.name);
+      const rateDifference = Math.abs(userHobby.rate - user.rate);
+      return { ...user, rateDifference };
+    }).sort((a, b) => a.rateDifference - b.rateDifference);
+
+    const minRateDifference = filteredOtherUsers[0].rateDifference;
+    filteredOtherUsers = filteredOtherUsers.filter(user => user.rateDifference === minRateDifference);
+    filteredOtherUsers = filteredOtherUsers.slice(0, 5);
+
+    const suggestedFriends = await Promise.all(filteredOtherUsers.map(async user => {
+      const userDetails = await userRepository.getUser(user.userId);
+      return userDetails;
+    }));
+
+    suggestedFriends.forEach(user => {
+      user.hobbies.sort((a, b) => a.name.localeCompare(b.name));
+    });
+
+    return suggestedFriends;
+  } catch (error) {
+    console.error("Could not fetch suggested friends:", error);
+    return [];
+  }
 }
 
 //Update this method to complete challenge3.a, challenge3.b and challenge3.c
@@ -150,16 +183,47 @@ async function rejectReq(id) {
 
 
 async function cancelReq(id) {
-  return new Promise((resolve, reject) => {
-    resolve("Request cancelled successfully!");
-  });
+  const friendRequest = await knex_db('friends')
+      .where('id', id)
+      .andWhere('status', 'PENDING') 
+      .first();
+
+  if (!friendRequest) {
+      return "Request not found!";
+  }
+
+  await knex_db('friends')
+      .where('id', id)
+      .del();
+
+  return "Request cancelled successfully!";
 }
 
+
 async function removeFriend(id) {
-  return new Promise((resolve, reject) => {
-    resolve("Friend removed successfully!");
-  });
+  // console.log(id);
+  const result = await knex_db('friends')
+      .where('id', id)
+      .andWhere('status', 'ACCEPTED') 
+      .first();
+      
+  if (!result) {
+      return "Friend not found!";
+  }
+  else {
+      await knex_db('friends')
+          .where('id', id)
+          .del();
+  }
+  // console.log(result);
+
+  if (result) {
+      return "Friend removed successfully!";
+  } else {
+      return "Friend not found!";
+  }
 }
+
 
 //Update this method to complete the challenge4.a
 async function viewFriends(id) {
