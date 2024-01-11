@@ -112,7 +112,30 @@ async function addNewProject(projectDetails) {
 }
 
 // Implement this method body for challenge 11
-async function addNewTask(taskDetails) {}
+async function addNewTask(taskDetails) {
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw(
+                'INSERT INTO tasks (name, description, assigneeId, reporterId, createdDate, dueDate, projectId, taskStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id',
+                [
+                    taskDetails.name,
+                    taskDetails.taskDescription,
+                    taskDetails.assignee,
+                    taskDetails.reporter,
+                    taskDetails.createdDate,
+                    taskDetails.dueDate,
+                    taskDetails.projectId,
+                    taskDetails.taskStatus
+                ]
+            )
+            .then((result) => {
+                resolve('success');
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 // Implement this method for challenge 12
 async function updateProject(details, projectId) {}
