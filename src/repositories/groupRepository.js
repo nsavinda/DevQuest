@@ -1,4 +1,5 @@
 import Group from '../models/group.js';
+import userRepository from './userRepository.js';
 import HttpStatus from '../enums/httpStatus.js';
 import knex_db from '../../db/db-config.js';
 import knex from 'knex';
@@ -9,7 +10,28 @@ function init(db) {
 }
 
 // Implement the method body for challenge 8
-async function getGroupsOfUser(userid) {}
+async function getGroupsOfUser(userid) {
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw(
+                ` SELECT 
+        gp.id, 
+        gp.name, 
+        gp.description 
+        FROM userGroups ug 
+        LEFT JOIN groups gp ON gp.id = ug.group_id 
+        WHERE ug.user_id = ?`,
+                [userid]
+            )
+            .then((result) => {
+                const groups = result;
+                resolve(groups);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 async function getProjectsOfGroup(groupId) {
     return new Promise((resolve, reject) => {
@@ -76,8 +98,15 @@ async function getUsersOfGroups(groupId) {
         WHERE ug.group_id = ?`,
                 [groupId]
             )
-            .then((result) => {
+            .then(async(result) => {
                 const users = result;
+                for (let i = 0; i < users.length; i++) {
+                    const user = users[i];
+                    const userDetails = await userRepository.getUser(user.id);
+                    users[i].firstname = userDetails.firstname;
+                    users[i].lastname = userDetails.lastname;
+                }
+
                 resolve(users);
             })
             .catch((error) => {
@@ -138,7 +167,24 @@ async function addNewTask(taskDetails) {
 }
 
 // Implement this method for challenge 12
-async function updateProject(details, projectId) {}
+async function updateProject(details, projectId) {
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw('UPDATE projects SET name = ?, description = ?, dueDate = ? WHERE id = ?', [
+                details.projectName,
+                details.projectDescription,
+                details.endDate,
+                projectId
+            ])
+            .then(() => {
+                resolve({ text: 'success' });
+            })
+            .catch((error) => {
+                console.log(error);
+                reject(error);
+            });
+    });
+}
 
 // Implement this method for challenge 13
 async function updateTask(details, taskId) {
@@ -154,13 +200,14 @@ async function updateTask(details, taskId) {
 
 // Implement this method for challenge 14
 async function updateProjectStatus(projectId, status) {
-    const result = await knex_db('projects') 
+    const result = await knex_db('projects')
         .where('id', projectId)
         .update({ projectStatus: status });
+
     if (result) {
-        return "success";
+        return 'success';
     } else {
-        throw new Error("Project update failed");
+        throw new Error('Project update failed');
     }
 }
 

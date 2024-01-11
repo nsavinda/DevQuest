@@ -67,6 +67,18 @@ router.get('/:projectId/project', async (req, res) => {
 
 // Implement the route method for updateProjectStatus in challenge 14 here
 //
+router.put('/:projectId/updateProject', async (req, res) => {
+    try {
+        const projectId = req.params.projectId;
+        const details = req.body;
+
+        const result = await groupService.updateProjectReq(details, projectId);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 router.put('/:projectId/updateProjectStatus', async (req, res) => {
     try {
         const projectId = req.params.projectId;
@@ -78,7 +90,6 @@ router.put('/:projectId/updateProjectStatus', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-
 
 // Implement the route method for updateTaskStatus in challenge 15 here
 //
