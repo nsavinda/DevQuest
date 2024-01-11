@@ -1,4 +1,5 @@
 import Group from '../models/group.js';
+import userRepository from './userRepository.js';
 import HttpStatus from '../enums/httpStatus.js';
 import knex_db from '../../db/db-config.js';
 import knex from 'knex';
@@ -97,8 +98,15 @@ async function getUsersOfGroups(groupId) {
         WHERE ug.group_id = ?`,
                 [groupId]
             )
-            .then((result) => {
+            .then(async(result) => {
                 const users = result;
+                for (let i = 0; i < users.length; i++) {
+                    const user = users[i];
+                    const userDetails = await userRepository.getUser(user.id);
+                    users[i].firstname = userDetails.firstname;
+                    users[i].lastname = userDetails.lastname;
+                }
+
                 resolve(users);
             })
             .catch((error) => {
