@@ -155,10 +155,46 @@ async function addNewGroup(data) {
 }
 
 // Implement this method for Challenge 6
-async function addUserToGroup(data) {}
+async function addUserToGroup(data) {
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw('INSERT INTO userGroups (user_id, group_id) VALUES (?, ?) RETURNING id', [
+                data.user_id,
+                data.group_id
+            ])
+            .then((result) => {
+                resolve('success');
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 // Implement this method for challenge 6
-async function getGroupsFromUser(userId) {}
+async function getGroupsFromUser(userId) {
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw(
+                ` SELECT 
+                    gp.id, 
+                    gp.name, 
+                    gp.description 
+                    FROM userGroups ug 
+                    LEFT JOIN groups gp ON gp.id = ug.group_id 
+                    WHERE ug.user_id = ?`,
+                [userId]
+            )
+            .then((result) => {
+                const groups = result;
+                console.log(groups);
+                resolve(groups);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 function parseGroupsData(data) {
     return data.map((item) => {

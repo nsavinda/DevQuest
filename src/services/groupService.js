@@ -99,14 +99,20 @@ async function addNewGroup(data) {
 }
 
 // Implement this method for Challenge 6
-// async function addUserToGroup(data) {
-
-// }
+async function addUserToGroup(data) {
+    const response = await groupRepository.addUserToGroup(data);
+    if (response == 'success') {
+        return { response: response, status: httpStatus.OK };
+    } else {
+        return { response, status: httpStatus.INTERNAL_SERVER_ERROR };
+    }
+}
 
 // Implement this method for Challenge 6
-// async function getGroupsFromUser(user_id) {
-
-// }
+async function getGroupsFromUser(user_id) {
+    const response = await groupRepository.getGroupsFromUser(user_id);
+    return { response: response, status: httpStatus.OK };
+}
 
 initializeApp();
 
@@ -121,5 +127,7 @@ export default {
     getUsersOfGroupsReq,
     getProjectByIdReq,
     addNewProjectReq,
-    addNewTaskReq
+    addNewTaskReq,
+    addUserToGroup,
+    getGroupsFromUser
 };
