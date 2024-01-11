@@ -49,12 +49,15 @@ router.get('/:groupId/users', async (req, res) => {
 //
 
 // Implement the route method for updateTask in challenge 13 here
-//
-//
-//
-//
-//
-//
+
+router.put('/:taskId/updateTask', async (req, res) => { 
+    
+        const taskId = req.params.taskId;
+        const taskDetails = req.body;
+        const response = await groupService.updateTaskReq(taskDetails, taskId);
+        res.send(response);
+ });
+
 
 router.get('/:projectId/project', async (req, res) => {
     const projectId = req.params.projectId;
