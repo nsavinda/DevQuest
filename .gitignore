@@ -1,0 +1,8 @@
+node_modules
+config/node_modules
+.env
+.idea
+package-lock.json
+main.sqlite3
+.vscode
+junit.xml
