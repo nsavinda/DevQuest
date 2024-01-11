@@ -44,5 +44,18 @@ async function deleteUser(id) {
   }
 }
 
+// insert user
+async function insertUser(user) {
+  console.log("user", user);
+  const response = await userRepository.insertUser(user);
+  if (response === "User not found!") {
+    return { status: httpStatus.NOT_FOUND };
+    
+  } else {
+    return { response: response, status: httpStatus.OK };
+  }
+}
+
+
 initializeApp();
-export default { getUsers, getUser, deleteUser };
+export default { getUsers, getUser, deleteUser, insertUser };
