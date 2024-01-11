@@ -61,7 +61,9 @@ async function getProjectByIdReq(projectId) {
 
 // Implement the method updateProjectStatusReq(projectId, status) for challenge 14 here
 //
-//
+async function updateProjectStatusReq(projectId, status) {
+    return await groupRepository.updateProjectStatus(projectId, status);
+}
 //
 //
 //
@@ -133,5 +135,6 @@ export default {
     addNewProjectReq,
     addNewTaskReq,
     addUserToGroup,
-    getGroupsFromUser
+    getGroupsFromUser,
+    updateProjectStatusReq
 };
