@@ -111,7 +111,18 @@ async function updateProjectStatus(projectId, status) {
 }
 
 // Implement this method for challenge 15
-async function updateTaskStatus(taskId, status) {}
+async function updateTaskStatus(taskId, status) {
+    const result = await knex_db('tasks') 
+        .where('id', taskId)
+        .update({ taskStatus: status });
+
+    if (result) {
+        return "success";
+    } else {
+        throw new Error("Task update failed");
+    }
+}
+
 
 async function getProjectById(projectId) {
     return new Promise((resolve, reject) => {

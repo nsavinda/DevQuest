@@ -70,9 +70,9 @@ async function updateProjectStatusReq(projectId, status) {
 
 // Implement the method updateTaskStatusReq(taskId, status) for challenge 15 here
 //
-//
-//
-//
+async function updateTaskStatusReq(taskId, status) {
+    return await groupRepository.updateTaskStatus(taskId, status);
+}
 //
 
 async function addNewProjectReq(projectDetails) {
@@ -132,5 +132,6 @@ export default {
     addNewTaskReq,
     addUserToGroup,
     getGroupsFromUser,
-    updateProjectStatusReq
+    updateProjectStatusReq,
+    updateTaskStatusReq
 };
