@@ -9,7 +9,28 @@ function init(db) {
 }
 
 // Implement the method body for challenge 8
-async function getGroupsOfUser(userid) {}
+async function getGroupsOfUser(userid) {
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw(
+                ` SELECT 
+        gp.id, 
+        gp.name, 
+        gp.description 
+        FROM userGroups ug 
+        LEFT JOIN groups gp ON gp.id = ug.group_id 
+        WHERE ug.user_id = ?`,
+                [userid]
+            )
+            .then((result) => {
+                const groups = result;
+                resolve(groups);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 async function getProjectsOfGroup(groupId) {
     return new Promise((resolve, reject) => {
