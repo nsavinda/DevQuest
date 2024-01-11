@@ -119,35 +119,28 @@ async function viewSentReqs(id) {
 //Update this method to view the users whose the requests were received and complete challenge3.e
 async function viewPendingReqs(id) {
   console.log("id", id)
-  return new Promise((resolve, reject) => {
-    knex_db
-      .select(
-        "friends.id as reqId",
-        "users.id",
-        "users.email",
-        "users.gender",
-        "users.firstname",
-        "users.lastname",
-        "users.image_url",
-      )
-      // .from("friends")
-      // .join("users", "users.id", "friends.sender_id")
-      // // .join("user_hobbies", "user_hobbies.user_id", "users.id")
-      // .join("hobbies", "hobbies.id", "users.id")
-      // // .join("user_skills", "user_skills.user_id", "users.id")
-      // .join("skills", "skills.id", "hobbies.id")
-      // .where("friends.recipient_id", id)
-      // .andWhere("friends.status", "PENDING")
-      // .groupBy("users.id", "friends.id")
-      .then((pendingRequests) => {
-        console.log("aaaaaaaaaa", pendingRequests);
-        resolve(pendingRequests);
-      })
-      .catch((error) => {
-        console.error(error);
-        reject(error);
-      });
+  let userId = id;
+
+  const friends = await knex_db('friends').where('status', 'PENDING').andWhere(function () {
+    this.where('sender_id', userId).orWhere('recipient_id', userId);
   });
+  let friendIds = friends.map(friend => friend.sender_id == userId ? friend.recipient_id : friend.sender_id);
+  
+  let requestIds = friends.map(friend => friend.id);
+  console.log("requestIds", requestIds)
+
+  console.log("friendIds", friendIds)
+  friendIds = [...new Set(friendIds)];
+
+  let pendingRequests = [];
+  for (let friendId of friendIds) {
+    const userDetails = await userRepository.getUser(friendId);
+    const request = friends.find(friend => friend.sender_id == friendId || friend.recipient_id == friendId);
+    userDetails.reqId = request.id;
+    pendingRequests.push(userDetails);
+  }
+
+  return pendingRequests;
 }
 
 
