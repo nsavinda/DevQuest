@@ -87,7 +87,29 @@ async function getUsersOfGroups(groupId) {
 }
 
 // Implement this method body for challenge 10
-async function addNewProject(projectDetails) {}
+async function addNewProject(projectDetails) {
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw(
+                'INSERT INTO projects (name, description, createdDate, dueDate, ownerId, groupId, projectStatus) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id',
+                [
+                    projectDetails.projectName,
+                    projectDetails.projectDescription,
+                    projectDetails.currentDate,
+                    projectDetails.endDate,
+                    projectDetails.userId,
+                    projectDetails.seletedUserGroupId,
+                    projectDetails.status
+                ]
+            )
+            .then((result) => {
+                resolve('success');
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 // Implement this method body for challenge 11
 async function addNewTask(taskDetails) {}
@@ -99,10 +121,30 @@ async function updateProject(details, projectId) {}
 async function updateTask(details, taskId) {}
 
 // Implement this method for challenge 14
-async function updateProjectStatus(projectId, status) {}
+async function updateProjectStatus(projectId, status) {
+    const result = await knex_db('projects') 
+        .where('id', projectId)
+        .update({ projectStatus: status });
+    if (result) {
+        return "success";
+    } else {
+        throw new Error("Project update failed");
+    }
+}
 
 // Implement this method for challenge 15
-async function updateTaskStatus(taskId, status) {}
+async function updateTaskStatus(taskId, status) {
+    const result = await knex_db('tasks') 
+        .where('id', taskId)
+        .update({ taskStatus: status });
+
+    if (result) {
+        return "success";
+    } else {
+        throw new Error("Task update failed");
+    }
+}
+
 
 async function getProjectById(projectId) {
     return new Promise((resolve, reject) => {
@@ -143,7 +185,7 @@ async function addNewGroup(data) {
         knex_db
             .raw(
                 'INSERT INTO groups (name, description, hobbies, capacity) VALUES (?, ?, ?, ?) RETURNING id',
-                [data.group_name, data.group_desc, data.group_hobbies || [], data.capacity || 0]
+                [data.group_name, data.group_desc, data.group_hobbies, data.group_capacity || 0]
             )
             .then((result) => {
                 resolve('success');
