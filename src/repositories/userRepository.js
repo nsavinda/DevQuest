@@ -242,54 +242,6 @@ async function insertUser(user) {
   });
 }
 
-// insert user
-async function insertUser(user) {
-  return new Promise((resolve, reject) => {
-
-    user.password = "Ryan1234";
-    console.log(user.email)
-    bcrypt.hash(user.password, 10, async (err, hash) => {
-      if (err) {
-        reject(err);
-      } else {
-        user.password = hash;
-
-        try {
-          const [userId] = await knex_db('users').insert({
-            email: user.email,
-            password: user.password,
-            gender: user.gender,
-            image_url: user.image_url,
-            firstname: user.firstname,
-            lastname: user.lastname,
-          }).returning('id');
-
-          for (let hobby of user.hobbies) {
-            await knex_db('hobbies').insert({
-              userId: userId,
-              name: hobby.name,
-              rate: hobby.rate,
-            });
-          }
-
-          for (let skill of user.skills) {
-            await knex_db('skills').insert({
-              userId: userId,
-              name: skill.name,
-              rate: skill.rate,
-            });
-          }
-
-          resolve('User inserted successfully!');
-        } catch (error) {
-          console.error(error);
-          reject(error);
-        }
-      }
-    });
-  });
-}
-
 export default {
   getUsers,
   init,
